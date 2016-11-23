@@ -159,6 +159,7 @@ function typography_wp_customize_register( $wp_customize ){
                 array(
                     'sanitize_callback' => 'typography_wp_sanitize_typography',
                     'default' => '',
+                    'transport' => 'postMessage',
                 )
             );
             $wp_customize->add_control(new WP_Customize_Typography_WP_Control(

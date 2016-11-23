@@ -94,9 +94,28 @@
                 }
             }
             control.container.find( '.debug').text( JSON.stringify( control.changedValues ) );
-            //control.setting.set( control.changedValues );
-            // Send change vaues to preview
+
             control.setting.set( JSON.stringify( control.changedValues ) );
+            var params = {};
+            params.action = 'typography_wp_render_css';
+            params.nonce = typography_wp_config.nonce;
+            params.theme = api.settings.theme.stylesheet;
+            params.customized = wp.customize.previewer.query().customized;
+
+           // console.log( params );
+            if ( window.typography_wp_xhr ) {
+                window.typography_wp_xhr.abort();
+            }
+            // Setup preview
+            window.typography_wp_xhr = $.ajax({
+                url: ajaxurl,
+                type: 'POST',
+                data: params,
+                success: function( res ) {
+                    window.typography_wp_xhr = false;
+                }
+            });
+            //api.previewer.refresh();
         },
 
         setupEvents: function(){
@@ -241,6 +260,8 @@
 
                 } else { // default font
                     values.fontType = 'normal';
+                    values.family = font;
+                    values.fontId = font_id;
                     this.setupNormalFontOptions( {} );
                 }
 

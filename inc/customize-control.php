@@ -55,8 +55,10 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
             // Let the parent class do its thing.
             parent::__construct( $manager, $id, $args );
 
+            $args = wp_parse_args( $args, array(
+                'fields' => array(),
+            ) );
 
-            $this->css_selector = isset( $args['css_selector'] ) ? $args['css_selector'] : '';
             if ( ! isset( $args['fields'] ) ) {
                 $args['fields'] = array();
             }
@@ -76,23 +78,30 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
             $json = parent::json();
 
             $value = $this->value();
-            $fields = array();
-            foreach( $this->fields as $k => $v ){
-                $fields[ str_replace( '-', '_', $k ) ] = true;
-            }
 
             $json['value'] = $value;
+            $support_fields = array(
+                'family'         => false,
+                'textColor'      => false,
+                'fontStyle'      => false,
+                'fontSize'       => false,
+                'lineHeight'     => false,
+                'letterSpacing'  => false,
+                'textTransform'  => false,
+                'textDecoration' => false,
+            );
 
-            $json['fields']  = wp_parse_args( $fields, array(
-                'family'         => true,
-                'color'          => true,
-                'fontStyle'      => true,
-                'fontSize'       => true,
-                'lineHeight'     => true,
-                'letterSpacing'  => true,
-                'textTransform'  => true,
-                'textDecoration' => true,
-            ) );
+            //$json['fields']  = wp_parse_args( $this->fields, $support_fields );
+
+            foreach ( $support_fields as $k => $v ) {
+                if ( isset( $this->fields[ $k ] ) ) {
+                    $this->fields[ $k ] = true;
+                } else {
+                    $this->fields[ $k ] = false;
+                }
+            }
+
+            $json['fields'] =  $this->fields;
 
             $json['labels']  = array(
                 'family'            => esc_html__( 'Font Family', 'onepress-plus' ),
@@ -104,7 +113,7 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
                 'textDecoration'   => esc_html__( 'Text Decoration', 'onepress-plus' ),
                 'letterSpacing'    => esc_html__( 'Letter Spacing (px)', 'onepress-plus' ),
                 'textTransform'    => esc_html__( 'Text Transform', 'onepress-plus' ),
-                'color'             => esc_html__( 'Color', 'onepress-plus' ),
+                'textColor'        => esc_html__( 'Color', 'onepress-plus' ),
             );
 
             return $json;
@@ -254,9 +263,7 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
                 </div>
 
                 <div class="typography-wp-settings">
-                    <?php
-                    // <div class="debug" style="word-wrap: break-word;"></div>
-                    ?>
+                    <div class="debug" style="word-wrap: break-word;"></div>
                     <# if ( data.fields ) { #>
                     <ul>
                         <# if ( data.fields.family ) { #>
@@ -328,9 +335,9 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
                             </li>
                         <# } #>
 
-                        <# if ( data.fields.color ) { #>
+                        <# if ( data.fields.textColor ) { #>
                             <li class="typography-text-transform clr">
-                                <span class="customize-control-title">{{ data.labels.color }}</span>
+                                <span class="customize-control-title">{{ data.labels.textColor }}</span>
                                 <input type="text" class="text-color" />
                             </li>
                         <# } #>

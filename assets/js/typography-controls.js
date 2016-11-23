@@ -1,4 +1,6 @@
 
+
+
 ( function( api, $ ) {
 
 	api.controlConstructor['typography_wp'] = api.Control.extend( {
@@ -19,10 +21,12 @@
 			var control = this;
             var values;
             try {
-                values = JSON.parse( control.params.value );
+                values = control.params.value;
             } catch ( e ) {
 
             }
+
+            console.log( control );
 
             // Test default value
             /*
@@ -51,7 +55,6 @@
             control.changedValues = control.toDefaultValues( values );
             control.container.find( 'select.select-typo-font-families').html( control.selectFontOptions() );
             control.setupEvents();
-
             control.setupDefaultFields();
 
 		},
@@ -65,9 +68,9 @@
                 category       : '',
                 fontId         : '',
                 fontType       : '',
-                subsets        : '',
+                subsets        : {},
                 variant        : '',
-                color          : '',
+                textColor      : '',
                 fontStyle      : '',
                 fontWeight     : '',
                 fontSize       : '',
@@ -90,7 +93,7 @@
                     control.changedValues[ name ] = value;
                 }
             }
-            ///control.container.find( '.debug').text( JSON.stringify( control.changedValues ) );
+            control.container.find( '.debug').text( JSON.stringify( control.changedValues ) );
             //control.setting.set( control.changedValues );
             // Send change vaues to preview
             control.setting.set( JSON.stringify( control.changedValues ) );
@@ -105,16 +108,16 @@
             } );
 
             // When change subsets
-            // font-subsets
-
             control.container.on( 'change', '.font-subsets input:checkbox', function(){
-                var v = $( this).val();
-                var subsets = control.changedValues.subsets;
-                if ( $( this).is( ':checked' ) ) {
-                    subsets[ v ] = v;
-                } else {
-                    delete subsets[ v ];
-                }
+
+                var subsets = {};
+                control.container.find( '.font-subsets input:checkbox').each( function(){
+                    if ( $( this ).is( ':checked' ) ) {
+                        var v = $( this ).val();
+                        subsets[ v ] = v;
+                    } else {
+                    }
+                } );
                 control.sendToPreview( 'subsets', subsets );
             } );
 
@@ -367,7 +370,7 @@
             $( 'input.font-size', control.container).val( control.changedValues.fontSize );
             $( 'input.line-height', control.container).val( control.changedValues.lineHeight );
             $( 'input.letter-spacing', control.container).val( control.changedValues.letterSpacing );
-            $( 'input.text-color', control.container).val( control.changedValues.color );
+            $( 'input.text-color', control.container).val( control.changedValues.textColor );
 
             $( '.text-decoration option',  control.container ).removeAttr( 'selected' );
             $( '.text-decoration option[value="'+control.changedValues.textDecoration+'"]', control.container ).attr( 'selected', 'selected' );

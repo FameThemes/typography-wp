@@ -90,7 +90,7 @@
                     control.changedValues[ name ] = value;
                 }
             }
-            control.container.find( '.debug').text( JSON.stringify( control.changedValues ) );
+            ///control.container.find( '.debug').text( JSON.stringify( control.changedValues ) );
             //control.setting.set( control.changedValues );
             // Send change vaues to preview
             control.setting.set( JSON.stringify( control.changedValues ) );

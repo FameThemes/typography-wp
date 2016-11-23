@@ -98,7 +98,7 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
                 'family'            => esc_html__( 'Font Family', 'onepress-plus' ),
                 'option_default'    => esc_html__( 'Default', 'onepress-plus' ),
                 'size'              => esc_html__( 'Font Size (px)',   'onepress-plus' ),
-                'weight'             => esc_html__( 'Font Weight',  'onepress-plus' ),
+                'weight'           => esc_html__( 'Font Weight',  'onepress-plus' ),
                 'style'             => esc_html__( 'Font Style',  'onepress-plus' ),
                 'lineHeight'       => esc_html__( 'Line Height (px)', 'onepress-plus' ),
                 'textDecoration'   => esc_html__( 'Text Decoration', 'onepress-plus' ),
@@ -254,7 +254,9 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
                 </div>
 
                 <div class="typography-wp-settings">
-                    <div class="debug" style="word-wrap: break-word;"></div>
+                    <?php
+                    // <div class="debug" style="word-wrap: break-word;"></div>
+                    ?>
                     <# if ( data.fields ) { #>
                     <ul>
                         <# if ( data.fields.family ) { #>

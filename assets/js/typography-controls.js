@@ -127,12 +127,12 @@
                 if ( control.changedValues.fontType == 'google' ) {
                     control.sendToPreview( {
                         variant: v,
-                        fontWeight: '',
+                        fontStyle: '',
                     } );
                 } else {
                     control.sendToPreview( {
                         variant: '',
-                        fontWeight: v,
+                        fontStyle: v,
                     } );
                 }
 
@@ -224,8 +224,8 @@
                     subsets : {},
                     variant : '',
                     fontType: '',
-                    style: '',
-                    weight: '',
+                    fontStyle: '',
+                    fontWeight: '',
                 };
                 if ( typeof font == 'object' ) { // google font
 
@@ -322,10 +322,9 @@
         selectFontOptions: function(  ){
             var control = this;
             var selectOptions = '';
-
+            selectOptions += control.optionNone;
             if ( typeof window.fontFamiliesOptions === "undefined" ) {
                 $.each( window.typography_wp_webfonts, function ( group_name, fonts ) {
-                    selectOptions += control.optionNone;
                     selectOptions += '<optgroup label="'+ _.escape( group_name ) +'" >';
                     $.each( fonts, function( fontId, font ){
                         var label = '';

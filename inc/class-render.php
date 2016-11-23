@@ -101,7 +101,7 @@ class Typography_WP_Render {
                     $data = $this->get_data( $control['id'], $control['fields'] );
                     $css = $this->css( $data );
                     if ( $css ) {
-                        $this->css .= $control['selector']."\n{" .$css."\n}\n";
+                        $this->css .= $control['selector']."\n{\n" .$css."\n}\n";
                     }
                 }
             }
@@ -270,7 +270,7 @@ class Typography_WP_Render {
         }
 
         if ( ! empty ( $css ) ) {
-            return join( "\n", $css );
+            return "\t".join( "\n\t", $css );
         }
         return false;
     }

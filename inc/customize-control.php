@@ -84,14 +84,14 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
             $json['value'] = $value;
 
             $json['fields']  = wp_parse_args( $fields, array(
-                'font_family'     => true,
-                'color'           => true,
-                'font_style'      => true,
-                'font_size'       => true,
-                'line_height'     => true,
-                'letter_spacing'  => true,
-                'text_transform'  => true,
-                'text_decoration' => true,
+                'family'         => true,
+                'color'          => true,
+                'fontStyle'      => true,
+                'fontSize'       => true,
+                'lineHeight'     => true,
+                'letterSpacing'  => true,
+                'textTransform'  => true,
+                'textDecoration' => true,
             ) );
 
             $json['labels']  = array(
@@ -100,10 +100,10 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
                 'size'              => esc_html__( 'Font Size (px)',   'onepress-plus' ),
                 'weight'             => esc_html__( 'Font Weight',  'onepress-plus' ),
                 'style'             => esc_html__( 'Font Style',  'onepress-plus' ),
-                'line_height'       => esc_html__( 'Line Height (px)', 'onepress-plus' ),
-                'text_decoration'   => esc_html__( 'Text Decoration', 'onepress-plus' ),
-                'letter_spacing'    => esc_html__( 'Letter Spacing (px)', 'onepress-plus' ),
-                'text_transform'    => esc_html__( 'Text Transform', 'onepress-plus' ),
+                'lineHeight'       => esc_html__( 'Line Height (px)', 'onepress-plus' ),
+                'textDecoration'   => esc_html__( 'Text Decoration', 'onepress-plus' ),
+                'letterSpacing'    => esc_html__( 'Letter Spacing (px)', 'onepress-plus' ),
+                'textTransform'    => esc_html__( 'Text Transform', 'onepress-plus' ),
                 'color'             => esc_html__( 'Color', 'onepress-plus' ),
             );
 
@@ -174,7 +174,7 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
             $array = array();
             if ( is_array( $google_fonts ) && is_array( $google_fonts['items'] ) ) {
                 foreach ( $google_fonts['items'] as $font ) {
-                    $id = sanitize_title( $font['name'] );
+                    $id = sanitize_title( $font['family'] );
                     $array[ $id ] = $font;
                 }
             }
@@ -254,50 +254,55 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
                 </div>
 
                 <div class="typography-wp-settings">
+                    <div class="debug" style="word-wrap: break-word;"></div>
                     <# if ( data.fields ) { #>
                     <ul>
-                        <# if ( data.fields.font_family ) { #>
+                        <# if ( data.fields.family ) { #>
                             <li class="typography-font-family">
                                 <span class="customize-control-title">{{ data.labels.family }}</span>
                                 <select class="font-family select-typo-font-families"></select>
                             </li>
+                            <li class="typography-font-subsets" style="display: none;">
+                                <span class="customize-control-title">Subsets</span>
+                                <div class="font-subsets"></div>
+                            </li>
                         <# } #>
 
-                        <# if ( data.fields.font_family && data.fields.font_style ) { #>
-                            <li class="typography-font-style typography-half">
+                        <# if ( data.fields.fontStyle && data.fields.fontStyle ) { #>
+                            <li class="typography-font-style">
                                 <span class="customize-control-title">{{ data.labels.style }}</span>
                                 <select class="font-style"></select>
                             </li>
-                            <li class="typography-font-style typography-half">
+                            <li class="typography-font-weight">
                                 <span class="customize-control-title">{{ data.labels.weight }}</span>
                                 <select class="font-weight"></select>
                             </li>
                         <# } #>
 
-                        <# if ( data.fields.font_size ) { #>
+                        <# if ( data.fields.fontSize ) { #>
                             <li class="typography-font-size typography-half right">
                                 <span class="customize-control-title">{{ data.labels.size  }}</span>
                                 <input class="unit-value font-size" placeholder="<?php esc_attr_e( 'Default', 'onepress-plus' ); ?>" type="number" min="1" />
                             </li>
                         <# } #>
 
-                        <# if ( data.fields.line_height ) { #>
+                        <# if ( data.fields.lineHeight ) { #>
                             <li class="typography-line-height first typography-half">
-                                <span class="customize-control-title">{{ data.labels.line_height }}</span>
+                                <span class="customize-control-title">{{ data.labels.lineHeight }}</span>
                                 <input class="unit-value line-height" placeholder="<?php esc_attr_e( 'Default', 'onepress-plus' ); ?>" type="number" min="1" />
                             </li>
                         <# } #>
 
-                        <# if ( data.fields.letter_spacing ) { #>
+                        <# if ( data.fields.letterSpacing ) { #>
                             <li class="typography-letter-spacing typography-half right">
-                                <span class="customize-control-title">{{ data.labels.letter_spacing }}</span>
+                                <span class="customize-control-title">{{ data.labels.letterSpacing }}</span>
                                 <input class="unit-value letter-spacing" placeholder="<?php esc_attr_e( 'Default', 'onepress-plus' ); ?>" type="number" />
                             </li>
                         <# } #>
 
-                        <# if ( data.fields.text_decoration ) { #>
+                        <# if ( data.fields.textDecoration ) { #>
                             <li class="typography-text-decoration clr">
-                                <span class="customize-control-title">{{ data.labels.text_decoration }}</span>
+                                <span class="customize-control-title">{{ data.labels.textDecoration }}</span>
                                 <select class="text-decoration">
                                     <option value=""><?php esc_attr_e( 'Default', 'onepress-plus' ); ?></option>
                                     <option value="none"><?php esc_attr_e( 'None', 'onepress-plus' ); ?></option>
@@ -308,9 +313,9 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
                             </li>
                         <# } #>
 
-                        <# if ( data.fields.text_transform ) { #>
+                        <# if ( data.fields.textTransform ) { #>
                             <li class="typography-text-transform clr">
-                                <span class="customize-control-title">{{ data.labels.text_transform }}</span>
+                                <span class="customize-control-title">{{ data.labels.textTransform }}</span>
                                 <select class="text-transform" >
                                     <option value=""><?php esc_attr_e( 'Default', 'onepress-plus' ); ?></option>
                                     <option value="none"><?php esc_attr_e( 'None', 'onepress-plus' ); ?></option>

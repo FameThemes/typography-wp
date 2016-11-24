@@ -25,7 +25,7 @@ if ( ! function_exists( 'typography_wp_init' ) ) {
             define('TYPOGRAPHY_WP_URL', trailingslashit(plugins_url('', __FILE__)));
         }
 
-        if ( ! defined( 'TYPOGRAPHY_WP_URL' ) ) {
+        if ( ! defined( 'TYPOGRAPHY_WP_PATH' ) ) {
             define('TYPOGRAPHY_WP_PATH', trailingslashit(plugin_dir_path(__FILE__)));
         }
 

@@ -103,6 +103,7 @@ class Typography_WP_Render {
                 if ( $control['selector'] ) {
                     $data = $this->get_data( $control['id'], $control['fields'] );
                     $css = $this->css( $data );
+                    $css = apply_filters( 'typography_wp_render_css_'.$control['id'], $css, $data, $control );
                     if ( $css ) {
                         $this->css .= $control['selector']."\n{\n" .$css."\n}\n";
                     }
@@ -209,7 +210,7 @@ class Typography_WP_Render {
                 $url.= '&subset='.join( ',', $this->subsets );
             }
         }
-        return $url;
+        return apply_filters( 'typography_wp_render_font_url', $url, $this );
     }
 
     function css( $fields ) {

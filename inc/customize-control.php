@@ -91,8 +91,6 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
                 'textDecoration' => false,
             );
 
-            //$json['fields']  = wp_parse_args( $this->fields, $support_fields );
-
             foreach ( $support_fields as $k => $v ) {
                 if ( isset( $this->fields[ $k ] ) ) {
                     $this->fields[ $k ] = true;
@@ -101,17 +99,21 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
                 }
             }
 
+            if ( ! isset( $this->fields[ 'unit' ] ) || ! $this->fields[ 'unit' ] ) {
+                $this->fields[ 'unit' ] = 'px';
+            }
+
             $json['fields'] =  $this->fields;
 
             $json['labels']  = array(
-                'family'            => esc_html__( 'Font Family', 'typography_wp' ),
-                'option_default'    => esc_html__( 'Default', 'typography_wp' ),
-                'size'              => esc_html__( 'Font Size',   'typography_wp' ),
+                'family'           => esc_html__( 'Font Family', 'typography_wp' ),
+                'option_default'   => esc_html__( 'Default', 'typography_wp' ),
+                'size'             => sprintf( esc_html__( 'Font Size (%1$s)', 'typography_wp' ), $this->fields[ 'unit' ] ),
                 'weight'           => esc_html__( 'Font Weight',  'typography_wp' ),
-                'style'             => esc_html__( 'Font Style',  'typography_wp' ),
-                'lineHeight'       => esc_html__( 'Line Height', 'typography_wp' ),
+                'style'            => esc_html__( 'Font Style',  'typography_wp' ),
+                'lineHeight'       => sprintf( esc_html__( 'Line Height (%1$s)', 'typography_wp' ), $this->fields[ 'unit' ] ),
                 'textDecoration'   => esc_html__( 'Text Decoration', 'typography_wp' ),
-                'letterSpacing'    => esc_html__( 'Letter Spacing', 'typography_wp' ),
+                'letterSpacing'    => sprintf( esc_html__( 'Letter Spacing (%1$s)', 'typography_wp' ), $this->fields[ 'unit' ] ),
                 'textTransform'    => esc_html__( 'Text Transform', 'typography_wp' ),
                 'textColor'        => esc_html__( 'Color', 'typography_wp' ),
             );

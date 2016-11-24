@@ -92,7 +92,15 @@ add_theme_support( 'typography_wp',
 );
 
 
-require_once TYPOGRAPHY_WP_PATH.'inc/functions.php';
-require_once TYPOGRAPHY_WP_PATH.'inc/class-render.php';
-require_once TYPOGRAPHY_WP_PATH.'inc/customize.php';
+/**
+ * Init functions
+ */
+function typography_wp_init(){
+    require_once TYPOGRAPHY_WP_PATH.'inc/functions.php';
+    require_once TYPOGRAPHY_WP_PATH.'inc/class-render.php';
+    require_once TYPOGRAPHY_WP_PATH.'inc/customize.php';
+}
+add_action( 'plugins_loaded', 'typography_wp_init' );
+
+
 

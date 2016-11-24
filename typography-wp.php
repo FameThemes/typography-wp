@@ -12,7 +12,9 @@
  * Domain Path:       /languages
  */
 
-
+/**
+ * Check maybe plugin loaded somewhere.
+ */
 if ( ! function_exists( 'typography_wp_init' ) ) {
     /**
      * Init functions

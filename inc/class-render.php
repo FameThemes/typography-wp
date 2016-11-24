@@ -16,7 +16,6 @@ class Typography_WP_Render {
     }
 
     function get_theme_mod( $name, $default = null ) {
-        //$theme_slug = get_option( 'stylesheet' );
         if ( $this->theme ) {
             $mods = get_option( "theme_mods_$this->theme " );
 
@@ -49,14 +48,18 @@ class Typography_WP_Render {
     }
 
     function ajax(){
+        // Check current user can
         if ( ! wp_verify_nonce( $_POST['nonce'], 'typography_wp' ) ) {
             die( 'security_check' );
         }
+
         $this->is_ajax = true;
         $this->customized = json_decode( wp_unslash( $_POST['customized'] ), true );
         $this->theme =  wp_unslash( $_POST['theme'] );
         $this->setup();
-        wp_send_json_success( array( 'font'=> $this->get_google_font_url(), 'css' => $this->css ) );
+        $url =  $this->get_google_font_url();
+        $url = add_query_arg( array( '_t'=> current_time( 'timestamp' ) ), $url );
+        wp_send_json_success( array( 'font_url'=> $url, 'css' => $this->css ) );
     }
 
     function head(){
@@ -82,7 +85,7 @@ class Typography_WP_Render {
     }
 
     function setup(){
-        $controls = get_theme_support( 'typography_wp' );
+        $controls = typography_wp_get_customize_controls();
         if ( ! is_array( $controls ) ) {
             return false;
         }
@@ -274,7 +277,6 @@ class Typography_WP_Render {
         }
         return false;
     }
-
 
 }
 

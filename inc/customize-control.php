@@ -104,16 +104,16 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
             $json['fields'] =  $this->fields;
 
             $json['labels']  = array(
-                'family'            => esc_html__( 'Font Family', 'onepress-plus' ),
-                'option_default'    => esc_html__( 'Default', 'onepress-plus' ),
-                'size'              => esc_html__( 'Font Size (px)',   'onepress-plus' ),
-                'weight'           => esc_html__( 'Font Weight',  'onepress-plus' ),
-                'style'             => esc_html__( 'Font Style',  'onepress-plus' ),
-                'lineHeight'       => esc_html__( 'Line Height (px)', 'onepress-plus' ),
-                'textDecoration'   => esc_html__( 'Text Decoration', 'onepress-plus' ),
-                'letterSpacing'    => esc_html__( 'Letter Spacing (px)', 'onepress-plus' ),
-                'textTransform'    => esc_html__( 'Text Transform', 'onepress-plus' ),
-                'textColor'        => esc_html__( 'Color', 'onepress-plus' ),
+                'family'            => esc_html__( 'Font Family', 'typography_wp' ),
+                'option_default'    => esc_html__( 'Default', 'typography_wp' ),
+                'size'              => esc_html__( 'Font Size',   'typography_wp' ),
+                'weight'           => esc_html__( 'Font Weight',  'typography_wp' ),
+                'style'             => esc_html__( 'Font Style',  'typography_wp' ),
+                'lineHeight'       => esc_html__( 'Line Height', 'typography_wp' ),
+                'textDecoration'   => esc_html__( 'Text Decoration', 'typography_wp' ),
+                'letterSpacing'    => esc_html__( 'Letter Spacing', 'typography_wp' ),
+                'textTransform'    => esc_html__( 'Text Transform', 'typography_wp' ),
+                'textColor'        => esc_html__( 'Color', 'typography_wp' ),
             );
 
             return $json;
@@ -192,9 +192,10 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
         }
 
         public static function get_fonts(){
-            return array(
-                'Normal Fonts' => self::get_default_fonts(),
-                'Google Fonts' => self::get_google_fonts(),
+            return apply_filters( 'typography_wp_get_fonts', array(
+                    'Normal Fonts' => self::get_default_fonts(),
+                    'Google Fonts' => self::get_google_fonts(),
+                )
             );
         }
 
@@ -266,7 +267,6 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
                 </div>
 
                 <div class="typography-wp-settings">
-                    <div class="debug" style="word-wrap: break-word;"></div>
                     <# if ( data.fields ) { #>
                     <ul>
                         <# if ( data.fields.family ) { #>
@@ -294,21 +294,21 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
                         <# if ( data.fields.fontSize ) { #>
                             <li class="typography-font-size typography-half right">
                                 <span class="customize-control-title">{{ data.labels.size  }}</span>
-                                <input class="unit-value font-size" placeholder="<?php esc_attr_e( 'Default', 'onepress-plus' ); ?>" type="number" min="1" />
+                                <input class="unit-value font-size" placeholder="<?php esc_attr_e( 'Default', 'typography_wp' ); ?>" type="number" min="1" />
                             </li>
                         <# } #>
 
                         <# if ( data.fields.lineHeight ) { #>
                             <li class="typography-line-height first typography-half">
                                 <span class="customize-control-title">{{ data.labels.lineHeight }}</span>
-                                <input class="unit-value line-height" placeholder="<?php esc_attr_e( 'Default', 'onepress-plus' ); ?>" type="number" min="1" />
+                                <input class="unit-value line-height" placeholder="<?php esc_attr_e( 'Default', 'typography_wp' ); ?>" type="number" min="1" />
                             </li>
                         <# } #>
 
                         <# if ( data.fields.letterSpacing ) { #>
                             <li class="typography-letter-spacing typography-half right">
                                 <span class="customize-control-title">{{ data.labels.letterSpacing }}</span>
-                                <input class="unit-value letter-spacing" placeholder="<?php esc_attr_e( 'Default', 'onepress-plus' ); ?>" type="number" />
+                                <input class="unit-value letter-spacing" placeholder="<?php esc_attr_e( 'Default', 'typography_wp' ); ?>" type="number" />
                             </li>
                         <# } #>
 
@@ -316,11 +316,11 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
                             <li class="typography-text-decoration clr">
                                 <span class="customize-control-title">{{ data.labels.textDecoration }}</span>
                                 <select class="text-decoration">
-                                    <option value=""><?php esc_attr_e( 'Default', 'onepress-plus' ); ?></option>
-                                    <option value="none"><?php esc_attr_e( 'None', 'onepress-plus' ); ?></option>
-                                    <option value="overline"><?php esc_attr_e( 'Overline', 'onepress-plus' ); ?></option>
-                                    <option value="underline"><?php esc_attr_e( 'Underline', 'onepress-plus' ); ?></option>
-                                    <option value="line-through"><?php esc_attr_e( 'Line through', 'onepress-plus' ); ?></option>
+                                    <option value=""><?php esc_attr_e( 'Default', 'typography_wp' ); ?></option>
+                                    <option value="none"><?php esc_attr_e( 'None', 'typography_wp' ); ?></option>
+                                    <option value="overline"><?php esc_attr_e( 'Overline', 'typography_wp' ); ?></option>
+                                    <option value="underline"><?php esc_attr_e( 'Underline', 'typography_wp' ); ?></option>
+                                    <option value="line-through"><?php esc_attr_e( 'Line through', 'typography_wp' ); ?></option>
                                 </select>
                             </li>
                         <# } #>
@@ -329,11 +329,11 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
                             <li class="typography-text-transform clr">
                                 <span class="customize-control-title">{{ data.labels.textTransform }}</span>
                                 <select class="text-transform" >
-                                    <option value=""><?php esc_attr_e( 'Default', 'onepress-plus' ); ?></option>
-                                    <option value="none"><?php esc_attr_e( 'None', 'onepress-plus' ); ?></option>
-                                    <option value="uppercase"><?php esc_attr_e( 'Uppercase', 'onepress-plus' ); ?></option>
-                                    <option value="lowercase"><?php esc_attr_e( 'Lowercase', 'onepress-plus' ); ?></option>
-                                    <option value="capitalize"><?php esc_attr_e( 'Capitalize', 'onepress-plus' ); ?></option>
+                                    <option value=""><?php esc_attr_e( 'Default', 'typography_wp' ); ?></option>
+                                    <option value="none"><?php esc_attr_e( 'None', 'typography_wp' ); ?></option>
+                                    <option value="uppercase"><?php esc_attr_e( 'Uppercase', 'typography_wp' ); ?></option>
+                                    <option value="lowercase"><?php esc_attr_e( 'Lowercase', 'typography_wp' ); ?></option>
+                                    <option value="capitalize"><?php esc_attr_e( 'Capitalize', 'typography_wp' ); ?></option>
                                 </select>
                             </li>
                         <# } #>

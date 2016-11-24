@@ -1,6 +1,4 @@
 
-
-
 ( function( api, $ ) {
 
 	api.controlConstructor['typography_wp'] = api.Control.extend( {
@@ -15,6 +13,36 @@
             'bold',
             'initial'
         ],
+        styleLabels: {
+            '100': 'Thin 100',
+            '100i': 'Thin 100 italic',
+            '100italic': 'Thin 100 italic',
+            '300': 'Light 300',
+            '300i': 'Light 300',
+            '300italic': 'Light 300 italic',
+            '400': 'Regular 400',
+            '400i': 'Regular 400 italic',
+            '400italic': 'Regular 400 italic',
+            '500': 'Medium 500',
+            '500i': 'Medium 500 italic',
+            '500italic': 'Medium 500 italic',
+            '600': 'Semi-bold 600',
+            '600i': 'Semi-bold 600 italic',
+            '600italic': 'Semi-bold 600 italic',
+            '700': 'Bold 700',
+            '700i': 'Bold 700 italic',
+            '700italic': 'Bold 700 italic',
+            '800': 'Extra bold 800',
+            '800i': 'Extra bold 800 italic',
+            '800italic': 'Extra bold 800 italic',
+            '900': 'Black 900',
+            '900i': 'Black 900 italic',
+            '900italic': 'Black 900 italic',
+
+            'regular': 'Regular',
+            'italic': 'Italic',
+
+        },
         optionNone: '<option value="">Default</option>',
         changedValues: {},
 		ready: function() {
@@ -26,36 +54,21 @@
 
             }
 
-            console.log( control );
-
-            // Test default value
-            /*
-            values = {
-                family: 'Lato',
-                category: '',
-                fontId: 'lato',
-                fontType: 'google',
-                subsets: {
-                    'latin': 'latin',
-                    'latin-ext': 'latin-ext',
-                },
-                variant: '300italic',
-                color: '#333',
-                fontStyle: '',
-                fontWeight: '',
-                fontSize: '16',
-                lineHeight: '22',
-                letterSpacing: '4',
-                textTransform: 'lowercase',
-                textDecoration: 'underline',
-                unit: 'px',
-            };
-            */
-
             control.changedValues = control.toDefaultValues( values );
             control.container.find( 'select.select-typo-font-families').html( control.selectFontOptions() );
             control.setupEvents();
             control.setupDefaultFields();
+
+            // Setup color picker
+            var picker = this.container.find('.text-color');
+            picker.wpColorPicker({
+                change: function() {
+                    control.sendToPreview( 'textColor', picker.wpColorPicker('color') )
+                },
+                clear: function() {
+                    control.sendToPreview( 'textColor', '' );
+                }
+            });
 
 		},
 
@@ -113,6 +126,24 @@
                 data: params,
                 success: function( res ) {
                     window.typography_wp_xhr = false;
+                    var frame = jQuery("#customize-preview iframe").contents();
+                    if ( res.success ) {
+                        if ( res.data.font_url ) {
+                            $( '#typography-wp-google-font',frame).remove();
+
+                            var link = $( '<link id="typography-wp-google-font" rel="stylesheet"> ' );
+                            link.attr( 'href', res.data.font_url );
+                            $( 'head', frame ).append( link );
+
+                        }
+                        $( '#typography-wp-style-inline-css', frame ).remove();
+                        if ( res.data.css ) {
+                            var style = '<style id="typography-wp-style-inline-css" type="text/css">' + res.data.css + '</style>' ;
+                            $( 'head', frame).append( style );
+                        }
+
+
+                    }
                 }
             });
             //api.previewer.refresh();
@@ -185,6 +216,13 @@
                 var v = $( this).val();
                 control.sendToPreview( {
                     lineHeight: v,
+                } );
+            } );
+
+            control.container.on( 'keyup change', 'input.letter-spacing', function(){
+                var v = $( this).val();
+                control.sendToPreview( {
+                    letterSpacing: v,
                 } );
             } );
 
@@ -273,6 +311,7 @@
         },
 
         setupGoogleFontOptions: function( font, valueDefault ){
+            var control = this;;
             valueDefault = this.toDefaultValues( valueDefault );
             var subsets = '', styles = '';
             if ( valueDefault.variant == '' ) {
@@ -286,16 +325,22 @@
                 if ( typeof valueDefault.subsets[ subset ] !== "undefined" ) {
                     checked = ' checked="checked" ';
                 }
+
                 subsets += '<div><label><input type="checkbox" '+checked+' value="' + _.escape( subset ) + '">' + _.escape( subset ) + '</label></div>';
             } );
 
             // variants
             $.each( font.variants, function( index, variant ) {
-                var selected = '';
+                var selected = '', label = '';;
                 if ( valueDefault.variant == variant ) {
                     selected = ' selected="selected" ';
                 }
-                styles += '<option '+selected+' value="' + _.escape( variant ) + '">' + _.escape( variant ) + '</option>';
+                if ( typeof control.styleLabels[ variant ] !== 'undefined' ) {
+                    label = control.styleLabels[ variant ];
+                } else {
+                    label = variant;
+                }
+                styles += '<option '+selected+' value="' + _.escape( variant ) + '">' + _.escape( label ) + '</option>';
             } );
 
             if ( subsets ) {
@@ -330,7 +375,7 @@
             // Font wights
             $.each( this.fontWeights, function( index, s ) {
                 var selected = '';
-                if ( s == valueDefault.fontWieght ) {
+                if ( s == valueDefault.fontWeight ) {
                     selected = ' selected="selected" ';
                 }
                 weights += '<option  '+selected+' value="' + _.escape( s.toLowerCase() ) + '">' + _.escape( s ) + '</option>';
@@ -398,12 +443,6 @@
 
             $( '.text-transform option',  control.container ).removeAttr( 'selected' );
             $( '.text-transform option[value="'+control.changedValues.textTransform+'"]', control.container ).attr( 'selected', 'selected' );
-
-
-        },
-
-
-        preview: function( settings ){
 
         },
 

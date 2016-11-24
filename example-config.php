@@ -1,4 +1,22 @@
 <?php
+
+// Call this plugin in theme
+
+if ( ! defined( 'TYPOGRAPHY_WP_URL' ) ) {
+    define('TYPOGRAPHY_WP_URL', trailingslashit( get_template_directory_uri() . '/typography-wp' ) );
+}
+
+if ( ! defined( 'TYPOGRAPHY_WP_PATH' ) ) {
+    define('TYPOGRAPHY_WP_PATH', trailingslashit( get_template_directory() . '/typography-wp') );
+}
+require( get_template_directory() . '/typography-wp/typography-wp.php' );
+
+
+
+
+
+// Call inside After theme setup function
+
 /**
  * Just a example see how to use/config this plugin
  */

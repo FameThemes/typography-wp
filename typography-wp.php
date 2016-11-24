@@ -21,9 +21,13 @@ if ( ! function_exists( 'typography_wp_init' ) ) {
      */
     function typography_wp_init()
     {
+        if ( ! defined( 'TYPOGRAPHY_WP_URL' ) ) {
+            define('TYPOGRAPHY_WP_URL', trailingslashit(plugins_url('', __FILE__)));
+        }
 
-        define('TYPOGRAPHY_WP_URL', trailingslashit(plugins_url('', __FILE__)));
-        define('TYPOGRAPHY_WP_PATH', trailingslashit(plugin_dir_path(__FILE__)));
+        if ( ! defined( 'TYPOGRAPHY_WP_URL' ) ) {
+            define('TYPOGRAPHY_WP_PATH', trailingslashit(plugin_dir_path(__FILE__)));
+        }
 
         require_once TYPOGRAPHY_WP_PATH . 'inc/functions.php';
         require_once TYPOGRAPHY_WP_PATH . 'inc/class-render.php';

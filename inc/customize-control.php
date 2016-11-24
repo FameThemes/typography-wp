@@ -237,9 +237,7 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
             ) );
 
             wp_register_script( 'typography-customize-controls', esc_url( $uri . 'assets/js/typography-controls.js' ), array( 'customize-controls' ) );
-            wp_register_style( 'typography-customize-controls', esc_url( $uri . 'assets/css/typography-controls.css' ) );
             wp_enqueue_script('typography-customize-controls');
-            wp_enqueue_style('typography-customize-controls');
 
         }
 

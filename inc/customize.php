@@ -73,3 +73,16 @@ function typography_wp_customize_register( $wp_customize ){
 
 }
 add_action( 'customize_register', 'typography_wp_customize_register' );
+
+
+function typography_wp_customize_print_styles(){
+    ?>
+    <style type="text/css">
+        .font-subsets, .typography-wp-settings option {
+            text-transform: capitalize;
+        }
+    </style>
+    <?php
+}
+add_action( 'customize_controls_print_styles', 'typography_wp_customize_print_styles' );
+

@@ -63,7 +63,6 @@ function typography_wp_customize_register( $wp_customize ){
                         'section' => $control['id'],
                         'priority' => $control['priority'],
                         'description' => $control['description'],
-                        'element' => $control['element'],
                         'fields' => $control['fields']
                     )
                 )

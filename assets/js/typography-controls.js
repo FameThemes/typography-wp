@@ -113,12 +113,28 @@
             params.action = 'typography_wp_render_css';
             params.nonce = typography_wp_config.nonce;
             params.theme = api.settings.theme.stylesheet;
-            params.customized = wp.customize.previewer.query().customized;
+            //params.customized = wp.customize.previewer.query().customized;
 
-           // console.log( params );
+
+            var _customized = {};
+            try {
+                $.each(typography_wp_config.controls, function (index, key) {
+                    var _c = api.control(key);
+                    _customized[key] = _c.setting();
+                });
+            } catch ( e ) {
+
+            }
+
+            params.customized = JSON.stringify( _customized );
+
             if ( window.typography_wp_xhr ) {
                 window.typography_wp_xhr.abort();
             }
+
+
+
+
             // Setup preview
             window.typography_wp_xhr = $.ajax({
                 url: ajaxurl,
@@ -141,12 +157,11 @@
                             var style = '<style id="typography-wp-style-inline-css" type="text/css">' + res.data.css + '</style>' ;
                             $( 'head', frame).append( style );
                         }
-
-
                     }
                 }
             });
             //api.previewer.refresh();
+
         },
 
         setupEvents: function(){

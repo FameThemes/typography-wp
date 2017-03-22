@@ -68,7 +68,7 @@ class Typography_WP_Render {
         if ( $url ) {
             echo '<link id="typography-wp-google-font" href="'.esc_url( $url ).'" rel="stylesheet"> ';
         }
-        if ( $this->css ) {
+        if ( $this->css || is_customize_preview() ) {
             echo "\n".'<style id="typography-wp-style-inline-css" type="text/css">'."\n";
             echo $this->css;
             echo "\n</style>\n";

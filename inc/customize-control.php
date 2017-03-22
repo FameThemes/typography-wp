@@ -234,8 +234,11 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
             wp_enqueue_style( 'wp-color-picker' );
 
             wp_localize_script('jquery', 'typography_wp_webfonts', $this->get_fonts() );
+            $controls = typography_wp_get_customize_controls();
+
             wp_localize_script('jquery', 'typography_wp_config', array(
                 'nonce' => wp_create_nonce( 'typography_wp' ),
+                'controls' => wp_list_pluck( $controls, 'id' )
             ) );
 
             wp_register_script( 'typography-customize-controls', esc_url( $uri . 'assets/js/typography-controls.js' ), array( 'customize-controls' ) );

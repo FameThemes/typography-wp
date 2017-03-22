@@ -77,7 +77,12 @@ class Typography_WP_Render {
 
     function get_data( $mod, $default = null ) {
         if ( $this->is_ajax && isset( $this->customized[ $mod ] ) ) {
-            return json_decode( $this->customized[ $mod ], true );
+            if ( is_string( $this->customized[ $mod ] ) ) {
+                return json_decode( $this->customized[ $mod ], true );
+            } else {
+                return $this->customized[ $mod ];
+            }
+
         } else {
             $data = $this->get_theme_mod( $mod, $default );
         }

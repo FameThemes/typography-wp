@@ -127,19 +127,16 @@
             }
 
             params.customized = JSON.stringify( _customized );
-
             if ( window.typography_wp_xhr ) {
                 window.typography_wp_xhr.abort();
             }
-
-
-
 
             // Setup preview
             window.typography_wp_xhr = $.ajax({
                 url: ajaxurl,
                 type: 'POST',
                 data: params,
+                cache: false,
                 success: function( res ) {
                     window.typography_wp_xhr = false;
                     var frame = jQuery("#customize-preview iframe").contents();

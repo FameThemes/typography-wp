@@ -9,7 +9,7 @@ class Typography_WP_Render {
     private $customized = array();
     private $theme = '';
     function __construct(){
-        add_action( 'wp_head', array( $this, 'head' ) );
+        add_action( 'wp_head', array( $this, 'head' ), 3 );
 
         add_action( 'wp_ajax_typography_wp_render_css', array( $this, 'ajax' ) );
         add_action( 'wp_ajax_nopriv_typography_wp_render_css', array( $this, 'ajax' ) );

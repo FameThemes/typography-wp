@@ -18,24 +18,38 @@ function typography_wp_customize_register( $wp_customize ){
 
     $wp_customize->add_panel( 'typography_wp' , $panel_settings );
 
+    $sections_flag = array();
+
     foreach ( $controls as $control ) {
         $control = wp_parse_args( $control, array(
             'id'        => '',
             'label'     => '',
             'description'     => '',
             'selector'   => '',
+            'section'   => '',
             'priority'  => '',
             'fields'    => ''
         ) );
         if ( $control['id'] ) {
 
-            $wp_customize->add_section( $control['id'] ,
-                array(
-                    'title'       => $control['label'],
-                    'description' => '',
-                    'panel'       => 'typography_wp',
-                )
-            );
+            $section_id = sanitize_title( $control['section'] );
+            $section_label = $control['section'] ;
+            if ( ! $section_id ) {
+                $section_id = sanitize_title( $control['id'] );
+                $section_label = $control['label'];
+            }
+
+            if ( $section_id && ! isset( $sections_flag[ $section_id ] ) ) {
+                $wp_customize->add_section( $section_id,
+                    array(
+                        'title' => $section_label,
+                        'description' => '',
+                        'panel' => 'typography_wp',
+                    )
+                );
+
+                $sections_flag[ $section_id ] = true;
+            }
 
             if ( ! is_array( $control['fields'] ) ) {
                 $control['fields'] = array();
@@ -60,7 +74,7 @@ function typography_wp_customize_register( $wp_customize ){
                     $control['id'],
                     array(
                         'label' => $control['label'],
-                        'section' => $control['id'],
+                        'section' => $section_id,
                         'priority' => $control['priority'],
                         'description' => $control['description'],
                         'fields' => $control['fields']

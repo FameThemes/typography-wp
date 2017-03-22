@@ -3,7 +3,7 @@
  * Plugin Name:       Typography WP
  * Plugin URI:        http://famethemes.com/
  * Description:       Easy to add Typography customize for your site.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            famethemes,shrimp2t
  * Author URI:        http://famethemes.com/
  * License:           GPL-2.0+
@@ -21,6 +21,7 @@ if ( ! function_exists( 'typography_wp_init' ) ) {
      */
     function typography_wp_init()
     {
+
         if ( ! defined( 'TYPOGRAPHY_WP_URL' ) ) {
             define('TYPOGRAPHY_WP_URL', trailingslashit( plugins_url( '', __FILE__ ) ) );
         }
